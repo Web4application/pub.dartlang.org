@@ -1,0 +1,2 @@
+dev_dependencies:
+  json_serializable: ^6.12.0
