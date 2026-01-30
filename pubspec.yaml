@@ -1,5 +1,5 @@
 name: my_app
-
 dependencies:
-  intl: ^0.20.2
-  path: ^1.9.1
+  transmogrify: ^1.2.0
+dependency_overrides:
+  transmogrify: '3.2.1'
