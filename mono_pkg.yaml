@@ -1,30 +1,27 @@
-# See https://pub.dev/packages/mono_repo for details
+# Every entry must be associated with at least one SDK version – corresponding
+# to the Dart SDK version or the Flutter framework version, depending on the
+# type of package. It can be specified at the top-lever as a single value or
+# an array. Alternatively, you can specify the SDK version(s) within each job.
+sdk:
+ - dev
+ # Specific `pubspec` to test the lower-bound SDK defined in pubspec.yaml
+ # This is only supported for Dart packages (not Flutter).
+ - pubspec
+
 stages:
-  - analyzer_and_format:
-    - group:
-      - format
-      - analyze: --fatal-infos .
-      - test: test/build/ensure_build_test.dart
-      sdk: dev
+  # Register two jobs to run under the `analyze` stage.
+  - analyze:
+    - analyze
+    - format
   - unit_test:
-    - group:
-      - command: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-      - test: -j 1
-      sdk:
-        - dev
-        - main
-    - test: -j 1
-      os: windows
-      sdk:
-        - dev
-        - main
-  - beta_cron:
-    - analyze: .
-      sdk: beta
-    - group:
-      - command: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-      - test: -j 1
-      sdk: beta
-    - test: -j 1
-      os: windows
-      sdk: beta
+    - test
+  # Example cron stage which will only run for scheduled jobs (here we run
+  # multiple OS configs for extra validation as an example).
+  #
+  # See the `mono_repo.yaml` example above for where this stage is specially
+  # configured.
+  - cron:
+    - test:
+      os:
+        - linux
+        - windows
